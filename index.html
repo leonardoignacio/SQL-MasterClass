@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> SQL MasterClass </title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: '#0056b3', accent: '#ff7518', sys: { ddl: '#6f42c1', dml: '#28a745', dql: '#007bff', dcl: '#dc3545', dtl: '#fd7e14' } } } } }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
+
+    <aside class="w-72 bg-gray-900 text-white flex flex-col border-r-4 border-accent shrink-0 z-20 shadow-2xl">
+        <div class="p-6 bg-gray-800 text-center border-b border-gray-700">
+            <h2 class="text-accent text-2xl font-bold mb-1">SQL MasterClass</h2>
+            <p class="text-xs text-gray-400 uppercase tracking-widest font-semibold">JS Render Engine</p>
+        </div>
+        <nav id="sidebar-nav" class="flex-1 overflow-y-auto custom-scroll py-4">
+            </nav>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto custom-scroll relative bg-white" id="main-scroll">
+        <div id="app-root" class="w-full min-h-full relative">
+            </div>
+    </main>
+
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

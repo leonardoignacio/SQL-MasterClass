@@ -1,0 +1,75 @@
+<svg viewBox="0 0 850 780" xmlns="http://www.w3.org/2000/svg" style="min-width: 600px; font-family: 'Inter', sans-serif; background-color: #f8f9fa; border-radius: 8px;">
+    <defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e0e0e0" stroke-width="0.5"/><circle cx="40" cy="40" r="1.5" fill="#ccc" /></pattern></defs>
+    <rect width="100%" height="100%" fill="url(#grid)" />
+    <text x="30" y="50" font-size="28" font-weight="bold" fill="#0056b3">DATABASE</text>
+    <text x="30" y="90" font-size="34" font-weight="bold" fill="#0078D7">GestaoEscolar</text>
+
+    <path d="M 425 210 L 425 280 L 515 280 L 515 320" fill="none" stroke="#333" stroke-width="2"/>
+    <path d="M 720 210 L 720 280 L 615 280 L 615 320" fill="none" stroke="#333" stroke-width="2"/>
+    <path d="M 230 490 L 230 550 L 350 550 L 350 590" fill="none" stroke="#333" stroke-width="2"/>
+    <path d="M 565 490 L 565 550 L 480 550 L 480 590" fill="none" stroke="#333" stroke-width="2"/>
+
+    <path d="M 410 230 L 440 230 M 410 240 L 440 240" stroke="#333" stroke-width="2"/> 
+    <path d="M 505 310 L 515 320 L 525 310" fill="none" stroke="#333" stroke-width="2"/> 
+    <path d="M 705 230 L 735 230 M 705 240 L 735 240" stroke="#333" stroke-width="2"/> 
+    <path d="M 605 310 L 615 320 L 625 310" fill="none" stroke="#333" stroke-width="2"/> 
+    <path d="M 215 510 L 245 510 M 215 520 L 245 520" stroke="#333" stroke-width="2"/> 
+    <path d="M 340 580 L 350 590 L 360 580" fill="none" stroke="#333" stroke-width="2"/> 
+    <path d="M 550 510 L 580 510 M 550 520 L 580 520" stroke="#333" stroke-width="2"/> 
+    <path d="M 470 580 L 480 590 L 490 580" fill="none" stroke="#333" stroke-width="2"/> 
+
+    <text x="425" y="265" font-size="12" fill="#555" text-anchor="middle">possui</text>
+    <text x="720" y="265" font-size="12" fill="#555" text-anchor="middle">leciona em</text>
+    <text x="230" y="540" font-size="12" fill="#555" text-anchor="middle">realiza</text>
+    <text x="565" y="540" font-size="12" fill="#555" text-anchor="middle">contem</text>
+
+    <g transform="translate(320, 30)">
+        <rect width="210" height="30" fill="#fff4e6" stroke="#ff9800" stroke-width="2"/><text x="105" y="20" font-size="12" font-weight="bold" fill="#333" text-anchor="middle">CURSO</text>
+        <rect y="30" width="210" height="150" fill="#fff" stroke="#ff9800" stroke-width="2"/>
+        <line x1="60" y1="30" x2="60" y2="180" stroke="#ff9800" stroke-width="1"/><line x1="170" y1="30" x2="170" y2="180" stroke="#ff9800" stroke-width="1"/><line x1="0" y1="70" x2="210" y2="70" stroke="#ff9800" stroke-width="1"/><line x1="0" y1="110" x2="210" y2="110" stroke="#ff9800" stroke-width="1"/><line x1="0" y1="145" x2="210" y2="145" stroke="#ff9800" stroke-width="1"/>
+        <text x="10" y="55" font-size="12" fill="#666">int</text><text x="70" y="55" font-size="12" fill="#333">id</text><text x="180" y="55" font-size="12" font-weight="bold" fill="#333">PK</text>
+        <text x="10" y="95" font-size="12" fill="#666">varchar</text><text x="70" y="95" font-size="12" fill="#333">nome</text>
+        <text x="10" y="130" font-size="12" fill="#666">text</text><text x="70" y="130" font-size="12" fill="#333">descricao</text>
+        <text x="10" y="165" font-size="12" fill="#666">int</text><text x="70" y="165" font-size="12" fill="#333">carga_horaria</text>
+    </g>
+
+    <g transform="translate(600, 30)">
+        <rect width="240" height="30" fill="#e0f2f1" stroke="#009688" stroke-width="2"/><text x="120" y="20" font-size="12" font-weight="bold" fill="#333" text-anchor="middle">DOCENTE</text>
+        <rect y="30" width="240" height="150" fill="#fff" stroke="#009688" stroke-width="2"/>
+        <line x1="60" y1="30" x2="60" y2="180" stroke="#009688" stroke-width="1"/><line x1="200" y1="30" x2="200" y2="180" stroke="#009688" stroke-width="1"/><line x1="0" y1="70" x2="240" y2="70" stroke="#009688" stroke-width="1"/><line x1="0" y1="110" x2="240" y2="110" stroke="#009688" stroke-width="1"/><line x1="0" y1="145" x2="240" y2="145" stroke="#009688" stroke-width="1"/>
+        <text x="10" y="55" font-size="12" fill="#666">int</text><text x="70" y="55" font-size="12" fill="#333">id</text><text x="210" y="55" font-size="12" font-weight="bold" fill="#333">PK</text>
+        <text x="10" y="95" font-size="12" fill="#666">varchar</text><text x="70" y="95" font-size="12" fill="#333">registro</text>
+        <text x="10" y="130" font-size="12" fill="#666">varchar</text><text x="70" y="130" font-size="12" fill="#333">nome</text>
+        <text x="10" y="165" font-size="12" fill="#666">varchar</text><text x="70" y="165" font-size="12" fill="#333">especialidade</text>
+    </g>
+
+    <g transform="translate(450, 320)">
+        <rect width="230" height="30" fill="#e3f2fd" stroke="#03a9f4" stroke-width="2"/><text x="115" y="20" font-size="12" font-weight="bold" fill="#333" text-anchor="middle">TURMA</text>
+        <rect y="30" width="230" height="150" fill="#fff" stroke="#03a9f4" stroke-width="2"/>
+        <line x1="60" y1="30" x2="60" y2="180" stroke="#03a9f4" stroke-width="1"/><line x1="190" y1="30" x2="190" y2="180" stroke="#03a9f4" stroke-width="1"/><line x1="0" y1="70" x2="230" y2="70" stroke="#03a9f4" stroke-width="1"/><line x1="0" y1="110" x2="230" y2="110" stroke="#03a9f4" stroke-width="1"/><line x1="0" y1="145" x2="230" y2="145" stroke="#03a9f4" stroke-width="1"/>
+        <text x="10" y="55" font-size="12" fill="#666">int</text><text x="70" y="55" font-size="12" fill="#333">id</text><text x="200" y="55" font-size="12" font-weight="bold" fill="#333">PK</text>
+        <text x="10" y="95" font-size="12" fill="#666">varchar</text><text x="70" y="95" font-size="12" fill="#333">ano_semestre</text>
+        <text x="10" y="130" font-size="12" fill="#666">int</text><text x="70" y="130" font-size="12" fill="#333">curso_id</text><text x="200" y="130" font-size="12" font-style="italic" fill="#0056b3">FK</text>
+        <text x="10" y="165" font-size="12" fill="#666">int</text><text x="70" y="165" font-size="12" fill="#333">docente_id</text><text x="200" y="165" font-size="12" font-style="italic" fill="#0056b3">FK</text>
+    </g>
+
+    <g transform="translate(100, 320)">
+        <rect width="230" height="30" fill="#fce4ec" stroke="#e91e63" stroke-width="2"/><text x="115" y="20" font-size="12" font-weight="bold" fill="#333" text-anchor="middle">ALUNO</text>
+        <rect y="30" width="230" height="150" fill="#fff" stroke="#e91e63" stroke-width="2"/>
+        <line x1="60" y1="30" x2="60" y2="180" stroke="#e91e63" stroke-width="1"/><line x1="190" y1="30" x2="190" y2="180" stroke="#e91e63" stroke-width="1"/><line x1="0" y1="70" x2="230" y2="70" stroke="#e91e63" stroke-width="1"/><line x1="0" y1="110" x2="230" y2="110" stroke="#e91e63" stroke-width="1"/><line x1="0" y1="145" x2="230" y2="145" stroke="#e91e63" stroke-width="1"/>
+        <text x="10" y="55" font-size="12" fill="#666">int</text><text x="70" y="55" font-size="12" fill="#333">id</text><text x="200" y="55" font-size="12" font-weight="bold" fill="#333">PK</text>
+        <text x="10" y="95" font-size="12" fill="#666">varchar</text><text x="70" y="95" font-size="12" fill="#333">matricula</text>
+        <text x="10" y="130" font-size="12" fill="#666">varchar</text><text x="70" y="130" font-size="12" fill="#333">nome</text>
+        <text x="10" y="165" font-size="12" fill="#666">date</text><text x="70" y="165" font-size="12" fill="#333">data_nascimento</text>
+    </g>
+
+    <g transform="translate(300, 590)">
+        <rect width="230" height="30" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/><text x="115" y="20" font-size="12" font-weight="bold" fill="#333" text-anchor="middle">ALUNO_TURMA</text>
+        <rect y="30" width="230" height="150" fill="#fff" stroke="#4caf50" stroke-width="2"/>
+        <line x1="60" y1="30" x2="60" y2="180" stroke="#4caf50" stroke-width="1"/><line x1="190" y1="30" x2="190" y2="180" stroke="#4caf50" stroke-width="1"/><line x1="0" y1="70" x2="230" y2="70" stroke="#4caf50" stroke-width="1"/><line x1="0" y1="110" x2="230" y2="110" stroke="#4caf50" stroke-width="1"/><line x1="0" y1="145" x2="230" y2="145" stroke="#4caf50" stroke-width="1"/>
+        <text x="10" y="55" font-size="12" fill="#666">int</text><text x="70" y="55" font-size="12" fill="#333">aluno_id</text><text x="200" y="55" font-size="12" font-style="italic" fill="#0056b3">FK/PK</text>
+        <text x="10" y="95" font-size="12" fill="#666">int</text><text x="70" y="95" font-size="12" fill="#333">turma_id</text><text x="200" y="95" font-size="12" font-style="italic" fill="#0056b3">FK/PK</text>
+        <text x="10" y="130" font-size="12" fill="#666">date</text><text x="70" y="130" font-size="12" fill="#333">data_matr</text>
+        <text x="10" y="165" font-size="12" fill="#666">dec/int</text><text x="70" y="165" font-size="12" fill="#333">notas/faltas</text>
+    </g>
+</svg>
