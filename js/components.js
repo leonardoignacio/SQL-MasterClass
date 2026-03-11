@@ -1,4 +1,18 @@
 class UIBuilder {
+    // Aglutinador Sênior: Pega os dados fatiados dos arquivos externos e unifica para o construtor UI
+    static getAulas() {
+        return [
+            typeof aula1 !== 'undefined' ? aula1 : null,
+            typeof aula2 !== 'undefined' ? aula2 : null,
+            typeof aula3 !== 'undefined' ? aula3 : null,
+            typeof aula4 !== 'undefined' ? aula4 : null
+        ].filter(a => a !== null);
+    }
+
+    static getBiblia() {
+        return typeof appDataBiblia !== 'undefined' ? appDataBiblia : [];
+    }
+
     static buildApp() {
         this.buildSidebar();
         this.buildViews();
@@ -14,7 +28,7 @@ class UIBuilder {
             <div class="px-8 py-2 text-[10px] text-gray-500 uppercase font-bold mt-6 mb-2 tracking-widest">A Jornada</div>
         `;
 
-        appDataAulas.forEach((aula, idx) => {
+        this.getAulas().forEach((aula, idx) => {
             html += `<a href="#" onclick="nav('${aula.id}')" id="nav-${aula.id}" class="nav-link block pl-10 pr-6 py-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 border-l-4 border-transparent hover:border-sys-${aula.theme} transition-colors">${idx + 1}. ${aula.title.split(':')[1].trim()}</a>`;
         });
 
@@ -37,7 +51,7 @@ class UIBuilder {
         <section id="view-home" class="page-view active">
             <div class="bg-brand text-white p-8 md:p-12 rounded-xl md:rounded-2xl shadow-xl mb-8 md:mb-10 text-center relative overflow-hidden">
                 <div class="relative z-10">
-                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 tracking-tight leading-tight">O Portal do Engenheiro</h1>
+                    <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 tracking-tight leading-tight">SQL MasterClass</h1>
                     <p class="text-base md:text-lg lg:text-xl opacity-90 max-w-3xl mx-auto font-light leading-relaxed">Bem-vindo à MasterClass Definitiva. Este portal contém 100% da arquitetura validada: Módulos completos, missões reais de análise de dados, certificações rigorosas e a Bíblia multi-SGBD no guia de bolso.</p>
                 </div>
             </div>
@@ -51,7 +65,7 @@ class UIBuilder {
         </section>`;
 
         // 2. AULAS VIEWS
-        appDataAulas.forEach((aula, index) => {
+        this.getAulas().forEach((aula, index) => {
             let num = index + 1;
             let bgClass = `bg-sys-${aula.theme}`;
             let textClass = `text-sys-${aula.theme}`;
@@ -100,7 +114,7 @@ class UIBuilder {
                         <div class="code-module border rounded-lg overflow-hidden border-gray-300">
                             <div class="inner-tab-header">
                                 ${aula.praticaSetup.codes ? aula.praticaSetup.codes.map((c, cIdx) => {
-                                    let isObs = c.label.toLowerCase().includes('observação') || c.label.toLowerCase().includes('aviso');
+                                    let isObs = c.label.toLowerCase().includes('aviso') || c.label.toLowerCase().includes('observação');
                                     let btnColor = isObs ? 'text-red-500 border-red-500' : 'text-accent border-accent';
                                     let hoverClass = isObs ? 'hover:text-red-400' : 'hover:text-gray-200';
                                     let dataType = isObs ? 'is-obs' : 'is-normal';
@@ -131,7 +145,7 @@ class UIBuilder {
                         <div class="code-module border rounded-lg overflow-hidden border-gray-300">
                             <div class="inner-tab-header">
                                 ${p.codes ? p.codes.map((c, cIdx) => {
-                                    let isObs = c.label.toLowerCase().includes('observação') || c.label.toLowerCase().includes('aviso');
+                                    let isObs = c.label.toLowerCase().includes('aviso') || c.label.toLowerCase().includes('observação');
                                     let btnColor = isObs ? 'text-red-500 border-red-500' : 'text-accent border-accent';
                                     let hoverClass = isObs ? 'hover:text-red-400' : 'hover:text-gray-200';
                                     let dataType = isObs ? 'is-obs' : 'is-normal';
@@ -202,12 +216,12 @@ class UIBuilder {
         <section id="view-biblia" class="page-view bg-gray-900 min-h-full">
             <div class="text-center mb-10 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-accent mb-3 md:mb-4">A Bíblia do SQL (Flashcards 3D)</h2>
-                <p class="text-sm md:text-base text-gray-400 max-w-3xl mx-auto px-4 md:px-0">Material Sênior desmembrado para leitura perfeita. Clique no cartão para girar e navegue pelos diferentes motores SGBDs isolados em cada slide.</p>
+                <p class="text-sm md:text-base text-gray-400 max-w-3xl mx-auto px-4 md:px-0">A documentação técnica final de todas as sublinguagens e as variações SQL Server, PostgreSQL, MySQL e Oracle.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 pb-24 px-4 max-w-6xl mx-auto">
         `;
 
-        appDataBiblia.forEach(fc => {
+        this.getBiblia().forEach(fc => {
             html += `
                 <div class="perspective-1500 h-[450px] md:h-[500px] fc-card">
                     <div class="relative w-full h-full transform-3d card-inner shadow-lg">

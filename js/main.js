@@ -27,11 +27,9 @@ window.nav = function(viewId) {
         } 
     }
     
-    // Auto-scroll e Auto-close Menu no Mobile
     document.getElementById('main-scroll').scrollTop = 0;
     if (window.innerWidth < 768) {
         const sidebar = document.getElementById('sidebar');
-        // Se a sidebar estiver visível (não tem -translate-x-full), esconde ela.
         if (!sidebar.classList.contains('-translate-x-full')) {
             toggleSidebar();
         }
@@ -44,13 +42,10 @@ window.toggleSidebar = function() {
     const overlay = document.getElementById('sidebar-overlay');
     
     if (sidebar.classList.contains('-translate-x-full')) {
-        // Abrir Menu
         sidebar.classList.remove('-translate-x-full');
         overlay.classList.remove('hidden');
-        // Gatilho visual p/ o fade in do overlay
         setTimeout(() => overlay.classList.remove('opacity-0'), 10);
     } else {
-        // Fechar Menu
         sidebar.classList.add('-translate-x-full');
         overlay.classList.add('opacity-0');
         setTimeout(() => overlay.classList.add('hidden'), 300);
@@ -72,7 +67,7 @@ window.tab = function(aulaId, tabName) {
     }
 };
 
-// --- CONTROLE DE SUB-ABAS DE CÓDIGO ---
+// --- CONTROLE DE SUB-ABAS DE CÓDIGO (AVISOS LÉO) ---
 window.switchInnerTab = function(groupId, tabIdx, tabType) {
     document.querySelectorAll(`[id^="content-${groupId}-"]`).forEach(c => c.classList.remove('active'));
     document.querySelectorAll(`[id^="btn-${groupId}-"]`).forEach(b => {
@@ -88,7 +83,6 @@ window.switchInnerTab = function(groupId, tabIdx, tabType) {
         targetBtn.classList.remove('text-gray-400', 'border-transparent');
         targetBtn.classList.add('active');
         
-        // Aplica classe de Perigo (Avisos) ou Normal
         if (tabType === 'is-obs') {
             targetBtn.classList.add('text-red-500', 'border-red-500');
         } else {
@@ -211,7 +205,7 @@ window.evalQ = function(formId, resultId) {
     
     if(pct === 100) { 
         resDiv.className = "mt-6 p-4 md:p-5 rounded-lg text-center bg-green-100 text-green-800 border border-green-300 flex flex-col items-center gap-2 shadow-sm"; 
-        resDiv.innerHTML = `<svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg> <span class="font-bold text-base md:text-lg">Excelente! Certificação Aprovada: ${acertos}/${total} acertos.</span>`; 
+        resDiv.innerHTML = `<svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg> <span class="font-bold text-base md:text-lg">Excelente! Certificação Aprovada: ${acertos}/${total} acertos.</span>`; 
     } else { 
         resDiv.className = "mt-6 p-4 md:p-5 rounded-lg text-center bg-red-50 text-red-800 border border-red-200 flex flex-col items-center gap-2 shadow-sm"; 
         resDiv.innerHTML = `<svg class="w-8 h-8 md:w-10 md:h-10 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> <span class="font-bold text-base md:text-lg">Revise o conteúdo. Você acertou ${acertos} de ${total} (${pct}%).</span>`; 
