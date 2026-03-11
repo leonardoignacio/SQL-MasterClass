@@ -14,7 +14,7 @@ class UIBuilder {
             <div class="px-8 py-2 text-xs text-gray-500 uppercase font-bold mt-6 mb-2 tracking-widest">A Jornada</div>
         `;
 
-        appData.aulas.forEach((aula, idx) => {
+        appDataAulas.forEach((aula, idx) => {
             html += `<a href="#" onclick="nav('${aula.id}')" id="nav-${aula.id}" class="nav-link block pl-10 pr-6 py-3 text-sm text-gray-400 hover:text-white hover:bg-gray-800 border-l-4 border-transparent hover:border-sys-${aula.theme} transition-colors">${idx + 1}. ${aula.title.split(':')[1].trim()}</a>`;
         });
 
@@ -37,13 +37,13 @@ class UIBuilder {
         <section id="view-home" class="page-view active">
             <div class="bg-brand text-white p-12 rounded-2xl shadow-xl mb-10 text-center relative overflow-hidden">
                 <div class="relative z-10">
-                    <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">SQL MasterClass</h1>
-                    <p class="text-lg md:text-xl opacity-90 max-w-3xl mx-auto font-light leading-relaxed">Bem-vindo à MasterClass Definitiva. Este portal contém 100% da arquitetura validada: 4 Módulos completos, 20 missões reais de análise de dados, 40 perguntas de certificação e a Bíblia com Flashcards isolando sintaxes por SGBD.</p>
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight">O Portal do Engenheiro</h1>
+                    <p class="text-lg md:text-xl opacity-90 max-w-3xl mx-auto font-light leading-relaxed">Bem-vindo à MasterClass Definitiva. Este portal contém 100% da arquitetura validada: 4 Módulos completos, 20 missões reais de análise de dados, 40 perguntas de certificação e 15 Flashcards cobrindo os 4 maiores SGBDs do mercado.</p>
                 </div>
             </div>
             <div class="box-panel">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Ecossistema: Banco \`GestaoEscolar\`</h2>
-                <p class="text-gray-500 mb-6 text-sm">Estude rigorosamente as Chaves Primárias (PK) e Estrangeiras (FK) do DER abaixo. Toda codificação nas próximas aulas baseia-se nesta arquitetura.</p>
+                <p class="text-gray-500 mb-6 text-sm">Estude rigorosamente as Chaves Primárias (PK) e Estrangeiras (FK) do DER abaixo.</p>
                 <div class="w-full overflow-x-auto bg-[#f8f9fa] rounded-lg p-6 border shadow-inner flex justify-center">
                     <img src="der.svg" alt="Diagrama DER" style="min-width: 700px; max-width: 100%;">
                 </div>
@@ -51,7 +51,7 @@ class UIBuilder {
         </section>`;
 
         // 2. AULAS VIEWS
-        appData.aulas.forEach((aula, index) => {
+        appDataAulas.forEach((aula, index) => {
             let num = index + 1;
             let bgClass = `bg-sys-${aula.theme}`;
             let textClass = `text-sys-${aula.theme}`;
@@ -90,39 +90,74 @@ class UIBuilder {
                     </div>
                 </div>`;
 
+            // Setup
             if (aula.praticaSetup) {
-                let lblColor = aula.praticaSetup.labelColor || aula.praticaSetup.color || bgClass;
                 html += `
                 <div id="pane-${aula.id}-setup" class="tab-pane space-y-6">
                     <div class="box-panel">
                         <p class="text-xl font-bold text-gray-800 mb-2">${aula.praticaSetup.title}</p>
                         <p class="text-sm text-gray-500 mb-4">${aula.praticaSetup.desc}</p>
-                        <div class="code-wrapper">
-                            <span class="code-label ${lblColor}">${aula.praticaSetup.label}</span>
-                            <button class="btn-copy" onclick="copyC(this)">Copiar</button>
-                            <pre><code>${aula.praticaSetup.code}</code></pre>
+                        <div class="code-module border rounded-lg overflow-hidden border-gray-300">
+                            <div class="inner-tab-header">
+                                ${aula.praticaSetup.codes ? aula.praticaSetup.codes.map((c, cIdx) => {
+                                    let isObs = c.label.toLowerCase().includes('observação') || c.label.toLowerCase().includes('aviso');
+                                    let btnColor = isObs ? 'text-red-400 border-red-400' : 'text-accent border-accent';
+                                    let hoverClass = isObs ? 'hover:text-red-300' : 'hover:text-gray-200';
+                                    let dataType = isObs ? 'is-obs' : 'is-normal';
+                                    return `<button onclick="switchInnerTab('${aula.id}_setup', ${cIdx}, '${dataType}')" id="btn-${aula.id}_setup-${cIdx}" class="inner-tab-btn ${hoverClass} ${cIdx === 0 ? 'active '+btnColor : 'text-gray-400 border-transparent'}" data-type="${dataType}">${c.label}</button>`;
+                                }).join('') : ''}
+                            </div>
+                            <div class="inner-tab-content-wrapper relative bg-[#1e1e1e]">
+                                ${aula.praticaSetup.codes ? aula.praticaSetup.codes.map((c, cIdx) => `
+                                    <div id="content-${aula.id}_setup-${cIdx}" class="inner-tab-content ${cIdx === 0 ? 'active' : ''}">
+                                        <button class="btn-copy" onclick="copyC(this)">Copiar</button>
+                                        <pre class="!border-l-0 !rounded-none !m-0"><code>${c.content}</code></pre>
+                                    </div>
+                                `).join('') : ''}
+                            </div>
                         </div>
                     </div>
                 </div>`;
             }
 
+            // Prática
             html += `<div id="pane-${aula.id}-pratica" class="tab-pane space-y-6">`;
-            aula.pratica.forEach(p => {
-                let pColor = p.color || p.labelColor || bgClass;
+            aula.pratica.forEach((p, pIdx) => {
                 html += `
                     <div class="box-panel">
                         <p class="text-xl font-bold ${textClass} mb-2">${p.title}</p>
                         ${p.desc ? `<p class="text-sm text-gray-600 mb-4">${p.desc}</p>` : ''}
-                        <div class="code-wrapper">
-                            <span class="code-label ${pColor}">${p.label}</span>
-                            <button class="btn-copy" onclick="copyC(this)">Copiar</button>
-                            <pre><code>${p.code}</code></pre>
+                        
+                        <div class="code-module border rounded-lg overflow-hidden border-gray-300">
+                            <div class="inner-tab-header">
+                                ${p.codes ? p.codes.map((c, cIdx) => {
+                                    let isObs = c.label.toLowerCase().includes('observação') || c.label.toLowerCase().includes('aviso');
+                                    let btnColor = isObs ? 'text-red-400 border-red-400' : 'text-accent border-accent';
+                                    let hoverClass = isObs ? 'hover:text-red-300' : 'hover:text-gray-200';
+                                    let dataType = isObs ? 'is-obs' : 'is-normal';
+                                    return `<button onclick="switchInnerTab('${aula.id}_p${pIdx}', ${cIdx}, '${dataType}')" id="btn-${aula.id}_p${pIdx}-${cIdx}" class="inner-tab-btn ${hoverClass} ${cIdx === 0 ? 'active '+btnColor : 'text-gray-400 border-transparent'}" data-type="${dataType}">${c.label}</button>`;
+                                }).join('') : `<button class="inner-tab-btn active text-accent border-accent">${p.label}</button>`}
+                            </div>
+                            <div class="inner-tab-content-wrapper relative bg-[#1e1e1e]">
+                                ${p.codes ? p.codes.map((c, cIdx) => `
+                                    <div id="content-${aula.id}_p${pIdx}-${cIdx}" class="inner-tab-content ${cIdx === 0 ? 'active' : ''}">
+                                        <button class="btn-copy" onclick="copyC(this)">Copiar</button>
+                                        <pre class="!border-l-0 !rounded-none !m-0"><code>${c.content}</code></pre>
+                                    </div>
+                                `).join('') : `
+                                    <div class="inner-tab-content active">
+                                        <button class="btn-copy" onclick="copyC(this)">Copiar</button>
+                                        <pre class="!border-l-0 !rounded-none !m-0"><code>${p.code}</code></pre>
+                                    </div>
+                                `}
+                            </div>
                         </div>
                     </div>
                 `;
             });
             html += `</div>`;
 
+            // Retro
             html += `
                 <div id="pane-${aula.id}-retro" class="tab-pane">
                     <div class="box-panel">
@@ -134,6 +169,7 @@ class UIBuilder {
                     </div>
                 </div>`;
 
+            // Quiz
             html += `
                 <div id="pane-${aula.id}-quiz" class="tab-pane">
                     <div class="box-panel">
@@ -158,17 +194,17 @@ class UIBuilder {
             </section>`;
         });
 
-        // 3. BÍBLIA VIEW (GRID OTIMIZADA PARA LEITURA: max 2 colunas)
+        // BÍBLIA VIEW
         html += `
         <section id="view-biblia" class="page-view bg-gray-900 min-h-full">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-bold text-accent mb-4">A Bíblia do SQL (Flashcards 3D)</h2>
-                <p class="text-gray-400 max-w-3xl mx-auto">Material Sênior desmembrado para leitura perfeita. Clique no cartão para girar e navegue pelos diferentes motores SGBDs isolados em cada slide.</p>
+                <p class="text-gray-400 max-w-3xl mx-auto">A documentação técnica final de todas as sublinguagens e as variações SQL Server, PostgreSQL, MySQL e Oracle.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 pb-24 px-4 max-w-6xl mx-auto">
         `;
 
-        appData.biblia.forEach(fc => {
+        appDataBiblia.forEach(fc => {
             html += `
                 <div class="perspective-1500 h-[500px] fc-card">
                     <div class="relative w-full h-full transform-3d card-inner shadow-lg">

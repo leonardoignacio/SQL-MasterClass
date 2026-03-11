@@ -1,14 +1,17 @@
-// Aguarda o carregamento
+// Aguarda o carregamento do DOM para iniciar a fábrica de componentes
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof UIBuilder !== 'undefined') {
         UIBuilder.buildApp();
     }
-    nav('home'); // Inicia na tela inicial
+    nav('home'); // Inicia a SPA na tela inicial
 });
 
 // --- ROTEADOR SPA ---
 window.nav = function(viewId) {
+    // Esconde todas as views
     document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+    
+    // Reseta o visual dos links do menu lateral
     document.querySelectorAll('.nav-link').forEach(n => { 
         n.classList.remove('bg-gray-800', 'text-white', 'border-accent'); 
         if(!n.classList.contains('pl-10')) {
@@ -16,9 +19,11 @@ window.nav = function(viewId) {
         }
     });
     
+    // Mostra a view alvo com animação
     const targetView = document.getElementById('view-' + viewId);
     if(targetView) targetView.classList.add('active');
     
+    // Marca o link ativo no menu lateral
     let link = document.getElementById('nav-' + viewId);
     if(link) { 
         link.classList.add('text-white'); 
@@ -29,18 +34,26 @@ window.nav = function(viewId) {
             link.style.borderColor = "var(--accent)"; 
         } 
     }
+    
+    // Scrolla para o topo da página suavemente
     document.getElementById('main-scroll').scrollTop = 0;
 };
 
-// --- CONTROLE DE ABAS ---
+// --- CONTROLE DE ABAS PRINCIPAIS ---
 window.tab = function(aulaId, tabName) {
+    // Esconde os painéis daquela aula específica
     document.querySelectorAll(`[id^="pane-${aulaId}"]`).forEach(c => c.classList.remove('active'));
+    
+    // Tira o estilo ativo dos botões
     document.querySelectorAll(`[id^="btn-${aulaId}"]`).forEach(b => { 
         b.classList.remove('active'); 
     });
     
-    document.getElementById(`pane-${aulaId}-${tabName}`).classList.add('active');
+    // Ativa o conteúdo alvo
+    let targetPane = document.getElementById(`pane-${aulaId}-${tabName}`);
+    if(targetPane) targetPane.classList.add('active');
     
+    // Aplica o estilo de ativo no botão clicado
     let activeBtn = document.getElementById(`btn-${aulaId}-${tabName}`);
     if(activeBtn) {
         activeBtn.classList.add('active');
@@ -50,17 +63,52 @@ window.tab = function(aulaId, tabName) {
     }
 };
 
-// --- ÁREA DE TRANSFERÊNCIA & TOAST ---
+// --- CONTROLE DE SUB-ABAS DE CÓDIGO (SGBDs / AVISOS) ---
+window.switchInnerTab = function(groupId, tabIdx, tabType) {
+    // Esconde todos os conteúdos de código daquele grupo específico
+    document.querySelectorAll(`[id^="content-${groupId}-"]`).forEach(c => c.classList.remove('active'));
+    
+    // Reseta botões limpando cores de alerta (red) e normais (accent)
+    document.querySelectorAll(`[id^="btn-${groupId}-"]`).forEach(b => {
+        b.classList.remove('active', 'text-accent', 'border-accent', 'text-red-400', 'border-red-400');
+        b.classList.add('text-gray-400', 'border-transparent');
+    });
+    
+    // Ativa o conteúdo do código alvo
+    let targetContent = document.getElementById(`content-${groupId}-${tabIdx}`);
+    if(targetContent) targetContent.classList.add('active');
+
+    // Ativa o botão da linguagem clicada
+    let targetBtn = document.getElementById(`btn-${groupId}-${tabIdx}`);
+    if(targetBtn) {
+        targetBtn.classList.remove('text-gray-400', 'border-transparent');
+        targetBtn.classList.add('active');
+        
+        // Aplica o alerta vermelho caso a Dri e o Léo tenham classificado como 'is-obs'
+        if (tabType === 'is-obs') {
+            targetBtn.classList.add('text-red-400', 'border-red-400');
+        } else {
+            targetBtn.classList.add('text-accent', 'border-accent');
+        }
+    }
+};
+
+// --- ÁREA DE TRANSFERÊNCIA (COPY) & TOAST NOTIFICATION ---
 window.copyC = function(btn) {
     let codeBlock = btn.parentElement.querySelector('pre code') || btn.parentElement.querySelector('pre');
+    
+    if(!codeBlock) return;
+    
     navigator.clipboard.writeText(codeBlock.innerText).then(() => { 
         showToast('Código copiado com sucesso!');
-        let orig = btn.innerText; 
+        let origText = btn.innerText; 
+        
         btn.innerText = 'Copiado!'; 
         btn.style.background = '#28a745'; 
         btn.style.borderColor = '#28a745';
+        
         setTimeout(() => { 
-            btn.innerText = orig; 
+            btn.innerText = origText; 
             btn.style.background = ''; 
             btn.style.borderColor = ''; 
         }, 2000); 
@@ -69,7 +117,7 @@ window.copyC = function(btn) {
 
 function showToast(message) {
     let container = document.getElementById('toast-container');
-    if(!container) return; // Fail-safe
+    if(!container) return; 
     
     let toast = document.createElement('div');
     toast.className = 'bg-gray-900 text-white px-6 py-3 rounded-lg shadow-xl border-l-4 border-accent flex items-center gap-3 transform translate-x-full transition-transform duration-300';
@@ -91,7 +139,7 @@ function showToast(message) {
     }, 3000);
 }
 
-// --- ACORDEÃO ---
+// --- ACORDEÃO (FAQ / RETROSPECTIVAS) ---
 window.toggleA = function(btn) {
     let panel = btn.nextElementSibling; 
     let allPanels = document.querySelectorAll('.acc-content');
@@ -103,8 +151,10 @@ window.toggleA = function(btn) {
     } else { 
         allPanels.forEach(a => { 
             a.style.maxHeight = null; 
-            a.previousElementSibling.querySelector('span').innerText = '+'; 
-            a.previousElementSibling.classList.remove('active'); 
+            if(a.previousElementSibling && a.previousElementSibling.querySelector('span')) {
+                a.previousElementSibling.querySelector('span').innerText = '+'; 
+                a.previousElementSibling.classList.remove('active'); 
+            }
         }); 
         panel.style.maxHeight = panel.scrollHeight + "px"; 
         btn.querySelector('span').innerText = '-'; 
@@ -115,6 +165,8 @@ window.toggleA = function(btn) {
 // --- MOTOR DE AVALIAÇÃO (QUIZZES) ---
 window.evalQ = function(formId, resultId) {
     let form = document.getElementById(formId); 
+    if(!form) return;
+
     let questions = form.querySelectorAll('.quiz-question'); 
     let acertos = 0; 
     let total = questions.length;
@@ -149,46 +201,52 @@ window.evalQ = function(formId, resultId) {
     });
 
     let resDiv = document.getElementById(resultId); 
+    if(!resDiv) return;
+
     resDiv.classList.remove('hidden'); 
     let pct = (acertos / total) * 100;
     
     if(pct === 100) { 
         resDiv.className = "mt-6 p-5 rounded-lg text-center bg-green-100 text-green-800 border border-green-300 flex flex-col items-center gap-2 shadow-sm"; 
-        resDiv.innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg> <span class="font-bold text-lg">Excelente! Certificação Aprovada: ${acertos}/${total} acertos.</span>`; 
+        resDiv.innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg> <span class="font-bold text-lg">Excelente! Certificação Aprovada: ${acertos}/${total} acertos.</span>`; 
     } else { 
         resDiv.className = "mt-6 p-5 rounded-lg text-center bg-red-50 text-red-800 border border-red-200 flex flex-col items-center gap-2 shadow-sm"; 
         resDiv.innerHTML = `<svg class="w-10 h-10 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg> <span class="font-bold text-lg">Revise o conteúdo. Você acertou ${acertos} de ${total} (${pct}%).</span>`; 
     }
 };
 
-// --- MOTOR 3D FLASHCARDS ---
+// --- MOTOR 3D FLASHCARDS BÍBLIA (FORÇA BRUTA INLINE) ---
 window.flipC = function(faceElement) { 
-    // Procura para cima quem é o container real que gira (.card-inner)
+    // Procura o contêiner raiz do cartão
     let card = faceElement.closest('.fc-card');
     if (card) {
+        // Encontra a engrenagem que roda
         let inner = card.querySelector('.card-inner');
         if (inner) {
-            inner.classList.add('rotate-y-180');
+            // APLICAÇÃO DE FORÇA BRUTA: Ignora classes CSS e injeta a transformação direto no estilo do HTML
+            inner.style.transform = 'rotateY(180deg)';
         }
     }
 };
 
 window.closeC = function(event, btnElement) { 
     event.stopPropagation(); 
+    
     let card = btnElement.closest('.fc-card');
     if (card) {
         let inner = card.querySelector('.card-inner');
         if (inner) {
-            inner.classList.remove('rotate-y-180');
+            // Reverte a força bruta visual
+            inner.style.transform = 'rotateY(0deg)';
             
-            // Reseta o carrossel no verso, garantindo que volte pro slide 1 silenciosamente
+            // Aguarda o término da animação CSS (700ms definidos no style.css) para resetar o carrossel calado
             setTimeout(() => {
                 let track = inner.querySelector('.carousel-track'); 
                 if(track) {
                     track.dataset.current = "0"; 
                     track.style.transform = `translateX(0%)`;
-                    const slidesCount = track.querySelectorAll('.slide').length;
                     
+                    const slidesCount = track.querySelectorAll('.slide').length;
                     let ind = inner.querySelector('.slide-indicator');
                     if (ind) ind.innerText = `1 / ${slidesCount}`;
                     
@@ -202,7 +260,7 @@ window.closeC = function(event, btnElement) {
     }
 };
 
-// --- MOTOR DO CARROSSEL ---
+// --- MOTOR DO CARROSSEL DOS FLASHCARDS ---
 window.moveSlide = function(btnElement, direction) {
     let cardBack = btnElement.closest('.fc-back'); 
     if (!cardBack) return;
@@ -216,13 +274,17 @@ window.moveSlide = function(btnElement, direction) {
     let currentIndex = parseInt(track.dataset.current || 0); 
     currentIndex += direction;
     
+    // Travas de segurança do limite do Array
     if (currentIndex < 0) currentIndex = 0; 
     if (currentIndex >= slides.length) currentIndex = slides.length - 1;
 
+    // Atualiza o rastreador de estado e translada a tela X% pra esquerda
     track.dataset.current = currentIndex; 
     track.style.transform = `translateX(-${currentIndex * 100}%)`;
     
+    // Atualiza o texto do visualizador
     if(indicator) indicator.innerText = `${currentIndex + 1} / ${slides.length}`; 
+    // Tranca os botões se bater no começo ou no fim
     if(btnPrev) btnPrev.disabled = currentIndex === 0; 
     if(btnNext) btnNext.disabled = currentIndex === slides.length - 1;
 };
